@@ -1,6 +1,4 @@
-/* 
-Dataset Overview and data cleaning: How many users are we analyzing?
-*/
+-- Dataset Overview and data cleaning: How many users are we analyzing?
 
 SELECT
  COUNT(*) AS total_users
@@ -9,9 +7,7 @@ FROM
 
 --------------------------------------------------------------------------------------------------------------------------
 
-/*
-ataset Overview and data cleaning: Replacing values with text
-*/
+-- Dataset Overview and data cleaning: Replacing values with text
 
 SELECT
   subscription_type,
@@ -22,15 +18,16 @@ SELECT
    WHEN is_churned = 0 THEN 'no'
    END
    AS churned,
-FROM `Spotify_churn.2025_analysis`
-GROUP BY subscription_type, is_churned
-ORDER BY subscription_type, is_churned;
+FROM 
+  `Spotify_churn.2025_analysis`
+GROUP BY 
+   subscription_type, is_churned
+ORDER BY 
+   subscription_type, is_churned;
 
 --------------------------------------------------------------------------------------------------------------------------
 
-/* 
-Calculating churn average
-*/
+-- Overall churn rate
 
 SELECT
    is_churned,
@@ -42,9 +39,7 @@ GROUP BY is_churned;
 
 --------------------------------------------------------------------------------------------------------------------------
 
-/* 
-Looking at user engagement
-*/
+-- Engagement comparison
 
 SELECT
  is_churned,
@@ -62,9 +57,7 @@ GROUP BY is_churned, churned;
 
 --------------------------------------------------------------------------------------------------------------------------
 
-/* 
-Segmentation analysis: Subscription type
-*/
+-- Segmentation analysis: Subscription type
 
 SELECT
  subscription_type,
@@ -81,9 +74,7 @@ ORDER BY subscription_type, is_churned;
 
 --------------------------------------------------------------------------------------------------------------------------
 
-/* 
-Segmentation analysis: Usage
-*/
+-- Segmentation analysis: Usage
 
 SELECT
  CASE
