@@ -1,0 +1,109 @@
+/* 
+Dataset Overview and data cleaning: How many users are we analyzing?
+*/
+
+SELECT
+ COUNT(*) AS total_users
+FROM
+ `Spotify_churn.2025_analysis`
+
+--------------------------------------------------------------------------------------------------------------------------
+
+/*
+ataset Overview and data cleaning: Replacing values with text
+*/
+
+SELECT
+  subscription_type,
+  is_churned,
+  COUNT(*) AS users,
+  CASE
+   WHEN is_churned = 1 THEN 'yes'
+   WHEN is_churned = 0 THEN 'no'
+   END
+   AS churned,
+FROM `Spotify_churn.2025_analysis`
+GROUP BY subscription_type, is_churned
+ORDER BY subscription_type, is_churned;
+
+--------------------------------------------------------------------------------------------------------------------------
+
+/* 
+Calculating churn average
+*/
+
+SELECT
+   is_churned,
+   COUNT(*) AS user_count,
+   ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage
+FROM
+   `Spotify_churn.2025_analysis`
+GROUP BY is_churned;
+
+--------------------------------------------------------------------------------------------------------------------------
+
+/* 
+Looking at user engagement
+*/
+
+SELECT
+ is_churned,
+ CASE
+   WHEN is_churned = 1 THEN 'yes'
+   WHEN is_churned = 0 THEN 'no'
+   END
+   AS churned,
+ AVG(listening_time) AS avg_listening_time,
+ AVG(songs_played_per_day) AS avg_songs_per_day,
+ AVG(ads_listened_per_week) AS avg_ads,
+ AVG(skip_rate) AS avg_skip_rate
+FROM `Spotify_churn.2025_analysis`
+GROUP BY is_churned, churned;
+
+--------------------------------------------------------------------------------------------------------------------------
+
+/* 
+Segmentation analysis: Subscription type
+*/
+
+SELECT
+ subscription_type,
+ is_churned,
+ COUNT(*) AS users,
+ CASE
+  WHEN is_churned = 1 THEN 'yes'
+  WHEN is_churned = 0 THEN 'no'
+  END
+  AS churned,
+FROM `Spotify_churn.2025_analysis`
+GROUP BY subscription_type, is_churned
+ORDER BY subscription_type, is_churned;
+
+--------------------------------------------------------------------------------------------------------------------------
+
+/* 
+Segmentation analysis: Usage
+*/
+
+SELECT
+ CASE
+   WHEN listening_time <= 20 THEN 'Very low: 20 hours or less'
+   WHEN listening_time BETWEEN 21 AND 50 THEN 'Low: 21-50 hours'
+   WHEN listening_time BETWEEN 51 AND 70 THEN 'Medium: 51-70 hours'
+   WHEN listening_time >= 71 THEN 'High: 71 hours or more'
+   ELSE 'Unknown'
+   END
+   AS listening_time_category,
+ COUNT(user_id) AS total_users,
+ SUM(CASE WHEN is_churned = 1 THEN 1 ELSE 0 END) AS churned_users,
+ AVG(listening_time) AS average_listening_time,
+ AVG(ads_listened_per_week) AS avg_ads,
+ AVG(skip_rate) AS avg_skip_rate,
+ (SUM(CASE WHEN is_churned = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(user_id))
+   AS churn_rate_percentage
+FROM `Spotify_churn.2025_analysis`
+GROUP BY listening_time_category
+ORDER BY MIN(listening_time) ASC;
+
+--------------------------------------------------------------------------------------------------------------------------
+
