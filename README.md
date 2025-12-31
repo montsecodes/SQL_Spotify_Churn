@@ -11,6 +11,7 @@
 * Practice real-world SQL analysis using a structured dataset
 
 **Analysis Structure**
+
 The project is organized around a series of analytical questions:
 
 1️⃣ What percentage of users have churned?
@@ -44,3 +45,10 @@ The project is organized around a series of analytical questions:
 | offline_listening     | Whether offline mode is used              |
 | is_churned            | Target variable (1 = churned, 0 = active) |
 
+**Next:**
+
+Click here to view the [SQL Code](https://github.com/montsecodes/SQL_Spotify_Churn/blob/main/SQL%20-%20Data%20Exploration.sql)
+
+These are my [Insights](https://github.com/montsecodes/SQL_Spotify_Churn/blob/main/Insights.md)
+
+Here is the [dataset](https://github.com/montsecodes/SQL_Spotify_Churn/blob/main/spotify_churn_dataset.csv)
